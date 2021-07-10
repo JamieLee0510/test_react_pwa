@@ -30,5 +30,19 @@ self.addEventListener('fetch', (e)=>{
 
 //Activate the SW
 self.addEventListener('activate', (e)=>{
+    //in order to keep the last cache
+    const cacheWhiteList = []
+    cacheWhiteList.push(CASHE_NAME)
+
+    e.waitUntil(
+        caches.keys()
+        .then((cacheNames)=>{
+            cacheNames.map((cacheName)=>{
+                if(!cacheWhiteList.includes(cacheName)){
+                    return caches.delete(cacheName)
+                }
+            })
+        })
+    )
     
 })
